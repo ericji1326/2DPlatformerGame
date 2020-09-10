@@ -1,0 +1,77 @@
+#include <LiquidCrystal.h>
+
+int charPosition = 8;
+const int leftButton = 8;
+const int rightButton = 9;
+const int LCDWidth = 16;
+
+int prevRight;
+int prevLeft;
+
+//create an object of type Liquid Crystal (LCD)
+LiquidCrystal lcd (12, 11, 2, 3, 4, 5);
+
+//create an avatar
+byte character[8] = {
+  B00100,
+  B01110,
+  B10101,
+  B00100,
+  B01010,
+  B01010,
+  B01010,
+};
+
+
+void setup() {
+  //initializing button pullups
+  pinMode(leftButton, INPUT_PULLUP);
+  pinMode(rightButton, INPUT_PULLUP);
+
+  //initialize LCD
+  lcd.begin(16,2);
+  lcd.clear();
+
+  //set initial character position on screen (middle)
+  lcd.createChar(0, character);
+
+}
+
+void loop() {
+
+  int leftButtonState = digitalRead(leftButton);
+  int rightButtonState = digitalRead(rightButton);
+
+  //if the left button is pressed and let go, move increment position of the character to the left (decrease)
+  //button was let go
+  if ((prevLeft == LOW) && (leftButtonState == HIGH)) {
+    //increment character to left  
+    charPosition--;
+    //prevent character from going out of bound
+    if (charPosition < 0) {
+      charPosition = 0;
+    }
+  }
+  //update button state, button must be pressed in order for next char position increment
+  prevLeft = leftButtonState;
+
+  //if the right button is pressed and let go, move increment position of the character to the right (increase)
+  if ((prevRight == LOW) && (rightButtonState == HIGH)) {
+    //increment character to right
+    charPosition++;
+    //prevent character from going out of bounds
+    if (charPosition >= LCDWidth) {
+      charPosition = LCDWidth;
+    }
+  }
+
+  prevRight = rightButtonState;
+
+  //refresh screen and update character location
+  lcd.clear();
+  lcd.setCursor(charPosition, 1);
+  lcd.write(byte(0));
+
+  delay(20);
+
+}
