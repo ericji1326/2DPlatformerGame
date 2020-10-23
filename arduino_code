@@ -4,6 +4,8 @@ int charPosition = 8;
 const int leftButton = 8;
 const int rightButton = 9;
 const int LCDWidth = 16;
+const int debounce_delay = 50;
+unsigned long last_debounce_time = 0;
 
 int prevRight;
 int prevLeft;
@@ -41,32 +43,39 @@ void loop() {
 
   int leftButtonState = digitalRead(leftButton);
   int rightButtonState = digitalRead(rightButton);
-
+  
+  if (leftButtonState != prevLeft) {
+    last_debounce_time = millis();                                             // Accounting for electrical noise (software debouncing)
+  }
+  
   //if the left button is pressed and let go, move increment position of the character to the left (decrease)
   //button was let go
-  if ((prevLeft == LOW) && (leftButtonState == HIGH)) {
-    //increment character to left  
-    charPosition--;
-    //prevent character from going out of bound
-    if (charPosition < 0) {
-      charPosition = 0;
+  if (millis() > (last_debounce_time + debounce_delay)) {
+     if ((prevLeft == LOW) && (leftButtonState == HIGH)) {
+       //increment character to left  
+       charPosition--;
+       //prevent character from going out of bound
+       if (charPosition < 0) {
+         charPosition = 0;
+       }
+      //update button state, button must be pressed in order for next char position increment
+      prevLeft = leftButtonState;
     }
   }
-  //update button state, button must be pressed in order for next char position increment
-  prevLeft = leftButtonState;
-
+  
   //if the right button is pressed and let go, move increment position of the character to the right (increase)
-  if ((prevRight == LOW) && (rightButtonState == HIGH)) {
-    //increment character to right
-    charPosition++;
-    //prevent character from going out of bounds
-    if (charPosition >= LCDWidth) {
-      charPosition = LCDWidth;
+  if (millis() > (last_debounce_time + debounce_delay)) {
+    if ((prevRight == LOW) && (rightButtonState == HIGH)) {
+      //increment character to right
+      charPosition++;
+      //prevent character from going out of bounds
+      if (charPosition >= LCDWidth) {
+        charPosition = LCDWidth;
+      }
+    //update button state, button must be pressed in order for next char position increment
+    prevRight = rightButtonState;
     }
   }
-
-  prevRight = rightButtonState;
-
   //refresh screen and update character location
   lcd.clear();
   lcd.setCursor(charPosition, 1);
