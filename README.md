@@ -1,4 +1,4 @@
-# dinosaur-jump-arduino-rendition
+# Arduino Game (Chrome Dinosaur Jump Rendition)
 
 A recreation of the Google Chrome dinosaur jump game using an Arduino Uno, buttons, buzzers, potentiometer and an LCD module. The code was written in C++ and makes uses of array manipulations
 to create the scrolling effect of the character. For those unfamiliar with the game, the objective is to jump over all the obstacles (in this rendition, the obstacles are trees to jump over).
