@@ -5,6 +5,8 @@ to create the scrolling effect of the character. For those unfamiliar with the g
 
 This game features sound effects for each jump and a game over chyme (lightly inspired by Mario Bros). Check out the game demo gif below!
 
-[]!(game-demo.gif)
+![](game-demo.gif)
 
 To create this project, simply follow this schematic shown below and upload the game Full_Game.ino file onto the Arduino Uno board.
+
+![Screenshot](arduino-schematic.png)
