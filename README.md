@@ -8,7 +8,6 @@ This game features sound effects for each jump and a game over chyme (lightly in
 <p align="center">
   <img src="game-demo.gif" alt="animated" />
 </p>
-![](game-demo.gif)
 
 To create this project, simply follow this schematic shown below and upload the game Full_Game.ino file onto the Arduino Uno board.
 
